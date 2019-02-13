@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { Chart } from 'chart.js';
 
 @Component({
@@ -6,10 +6,10 @@ import { Chart } from 'chart.js';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   @ViewChild('barCanvas') barCanvas;
-   barChart: any;
+  public barChart: any;
   public objetivo: number;
   public solucion;
   public highest = -1;
@@ -22,44 +22,52 @@ export class AppComponent {
   public calculando = true;
 
   constructor(){
-    this.objetivo = 55;
-    this.solucion = this.bfs(this.objetivo);
-    for(let k = 0; k <= 100; k++){
-      var sol = this.bfs(k);
-      this.objs.push(k);
-      this.solsSolo.push(sol.length);
-      this.sols.push({obj: k, sol: sol.length});
-      if(sol.length > this.highest){
-        this.highest = sol.length;
-        this.highestNum = k;
-      }
-      if(sol.length < this.lowest){
-        this.lowest = sol.length;
-        this.lowestNum = k;
-      }
-    }
-    this.calculando = false;
+    // this.objetivo = 55;
+    // this.solucion = this.bfs(this.objetivo);
+    // for(let k = 0; k <= 100; k++){
+    //   var sol = this.bfs(k);
+    //   this.objs.push(k);
+    //   this.solsSolo.push(sol.length);
+    //   this.sols.push({obj: k, sol: sol.length});
+    //   if(sol.length > this.highest){
+    //     this.highest = sol.length;
+    //     this.highestNum = k;
+    //   }
+    //   if(sol.length < this.lowest){
+    //     this.lowest = sol.length;
+    //     this.lowestNum = k;
+    //   }
+    // }
+    // this.calculando = false;
   }
 
-  ionViewDidLoad() {
-  if(!this.calculando){
+  ngOnInit() {
+  console.log("Chart drawed")
   this.barChart = new Chart(this.barCanvas.nativeElement, {
-
            type: 'line',
            data: {
-                labels: this.objs,
+                labels: ["New", "In Progress", "On Hold"],
                 datasets: [{
-                    label: "My First dataset",
-                    backgroundColor: 'rgb(255, 99, 132)',
-                    borderColor: 'rgb(255, 99, 132)',
-                    data: this.sols,
+                    data: [1,2,3],
+                    borderColor: '#00AEFF',
+                    fill: false
                 }]
             },
-           options: {}
-
-       });
-       }
+            options: {
+     legend: {
+       display: false
+     },
+     scales: {
+       xAxes: [{
+         display: true
+       }],
+       yAxes: [{
+         display: true
+       }],
      }
+   }
+         });
+  }
 
 bfs(objetivo){
   var t0 = performance.now();
